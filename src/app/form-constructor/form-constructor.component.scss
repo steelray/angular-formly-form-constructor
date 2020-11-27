@@ -1,0 +1,84 @@
+app-form-constructor {
+  display: block;
+  margin: 0 auto;
+  width: 800px;
+  max-width: 100%;
+  padding: 15px;
+  box-sizing: border-box;
+}
+
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+}
+
+
+app-fc-field-add-dialog {
+  $columns: 12;
+
+  * {
+    box-sizing: border-box;
+  }
+
+  mat-card {
+    margin-bottom: 30px;
+
+    &-content {
+      max-height: 30vh;
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+  }
+
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 -10px;
+  }
+
+  [class^='col-'] {
+    display: block;
+    box-sizing: border-box;
+  }
+
+  .fields-group-row {
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #ccc;
+  }
+
+  .actions {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  @mixin col-x-list {
+    @for $i from 1 through $columns {
+      .col-#{$i} {
+        width: #{100 / ($columns / $i)}+'%';
+        padding: 0 10px;
+      }
+    }
+  }
+
+  @include col-x-list;
+}
+
+.file-field-wrapper {
+  display: flex;
+  align-items: center;
+
+  .formly-field-file-btn {
+    margin-right: 10px;
+
+    input {
+      display: none;
+    }
+  }
+}
