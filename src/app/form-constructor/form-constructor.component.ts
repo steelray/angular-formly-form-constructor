@@ -68,6 +68,7 @@ export class FormConstructorComponent implements OnDestroy {
         defaultValue,
       };
     });
+    console.log(fieldsToSave);
     this.onSave.emit(fieldsToSave);
   }
 

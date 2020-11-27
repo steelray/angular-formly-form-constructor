@@ -5,13 +5,33 @@ app-form-constructor {
   max-width: 100%;
   padding: 15px;
   box-sizing: border-box;
-}
+
+  .file-field-wrapper {
+    display: flex;
+    align-items: center;
+
+    .formly-field-file-btn {
+      margin-right: 10px;
+
+      input {
+        display: none;
+      }
+    }
+  }
+
+  .form-actions {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 0;
+  }
 
 
-form {
-  display: flex;
-  flex-direction: column;
+  form {
+    display: flex;
+    flex-direction: column;
+  }
 }
+
 
 
 
@@ -64,23 +84,4 @@ app-fc-field-add-dialog {
   }
 
   @include col-x-list;
-}
-
-.file-field-wrapper {
-  display: flex;
-  align-items: center;
-
-  .formly-field-file-btn {
-    margin-right: 10px;
-
-    input {
-      display: none;
-    }
-  }
-}
-
-.form-actions {
-  display: flex;
-  justify-content: space-between;
-  margin: 20px 0;
 }
