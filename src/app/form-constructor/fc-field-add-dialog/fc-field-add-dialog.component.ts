@@ -37,7 +37,8 @@ export class FcFieldAddDialogComponent {
       label,
       placeholder,
       options,
-      required
+      required,
+      defaultValue
     } = this.form.value;
 
     let fieldType; // input, select, radio, file, checkbox
@@ -56,8 +57,6 @@ export class FcFieldAddDialogComponent {
         break;
     }
 
-    console.log(options);
-
     const fieldConfig: FormlyFieldConfig = {
       type: fieldType,
       key,
@@ -66,7 +65,8 @@ export class FcFieldAddDialogComponent {
         placeholder,
         options,
         required,
-        type: inputType
+        type: inputType,
+        defaultValue
       }
     };
 

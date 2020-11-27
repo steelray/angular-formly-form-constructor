@@ -1,4 +1,12 @@
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, OnDestroy, OnInit, Output, ViewEncapsulation } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  OnDestroy,
+  OnInit, Output, ViewEncapsulation
+} from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { FormlyFieldConfig } from '@ngx-formly/core';
@@ -27,7 +35,7 @@ import { FcFieldAddDialogComponent } from './fc-field-add-dialog/fc-field-add-di
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
-export class FormConstructorComponent implements OnInit, AfterViewInit, OnDestroy {
+export class FormConstructorComponent implements OnDestroy {
   form = new FormGroup({});
   model: { [key: string]: any } = {};
   subscription = new Subscription();
@@ -42,15 +50,25 @@ export class FormConstructorComponent implements OnInit, AfterViewInit, OnDestro
     private dialog: MatDialog
   ) { }
 
-  ngOnInit(): void {
-  }
-
-  ngAfterViewInit(): void {
-    console.log(this.form.get('email'));
-  }
-
   onSubmit(): void {
-    this.onSave.emit(this.model);
+    const fieldsToSave = this.fields.map(field => {
+      const {
+        key,
+        type,
+        templateOptions,
+        defaultValue
+      } = field;
+      return {
+        key, type, templateOptions: {
+          label: templateOptions?.label,
+          placeholder: templateOptions?.placeholder,
+          required: templateOptions?.required,
+          options: templateOptions?.options
+        },
+        defaultValue,
+      };
+    });
+    this.onSave.emit(fieldsToSave);
   }
 
   onFieldAdd(): void {
@@ -65,7 +83,6 @@ export class FormConstructorComponent implements OnInit, AfterViewInit, OnDestro
         tap(res => this.addField(res))
       ).subscribe()
     );
-
   }
 
   ngOnDestroy(): void {
@@ -74,10 +91,9 @@ export class FormConstructorComponent implements OnInit, AfterViewInit, OnDestro
 
   private addField(field: FormlyFieldConfig): void {
     this.fields = [field, ...this.fields];
-    const key: any = field.key;
-    this.model[key] = field?.defaultValue;
+    // const key: any = field.key;
+    // this.model[key] = field?.defaultValue;
     this.cdRef.detectChanges();
-    console.log(this.fields);
   }
 
 }

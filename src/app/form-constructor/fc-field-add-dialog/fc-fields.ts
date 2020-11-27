@@ -43,7 +43,7 @@ export const fcFields: FormlyFieldConfig[] = [
           label: 'Textarea field'
         },
       ],
-    }
+    },
   },
   {
     key: 'options',
@@ -118,6 +118,15 @@ export const fcFields: FormlyFieldConfig[] = [
     templateOptions: {
       required: false,
       label: 'Field is required',
+    },
+    hideExpression: '!model.type'
+  },
+  {
+    type: FIELD_TYPES.INPUT,
+    key: 'defaultValue',
+    templateOptions: {
+      required: false,
+      label: 'Field default value',
     },
     hideExpression: '!model.type'
   },

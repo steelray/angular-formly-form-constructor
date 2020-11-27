@@ -13,10 +13,6 @@ form {
   flex-direction: column;
 }
 
-.actions {
-  display: flex;
-  justify-content: space-between;
-}
 
 
 app-fc-field-add-dialog {
@@ -81,4 +77,10 @@ app-fc-field-add-dialog {
       display: none;
     }
   }
+}
+
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 0;
 }
