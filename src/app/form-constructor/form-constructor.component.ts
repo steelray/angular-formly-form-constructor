@@ -63,12 +63,12 @@ export class FormConstructorComponent implements OnDestroy {
           label: templateOptions?.label,
           placeholder: templateOptions?.placeholder,
           required: templateOptions?.required,
-          options: templateOptions?.options
+          options: templateOptions?.options,
+          attributes: templateOptions?.attributes
         },
         defaultValue,
       };
     });
-    console.log(fieldsToSave);
     this.onSave.emit(fieldsToSave);
   }
 
@@ -77,7 +77,8 @@ export class FormConstructorComponent implements OnDestroy {
       this.dialog.open(
         FcFieldAddDialogComponent,
         {
-          width: '600px'
+          width: '600px',
+          data: this.fields
         }
       ).afterClosed().pipe(
         filter(res => !!res),
@@ -91,6 +92,7 @@ export class FormConstructorComponent implements OnDestroy {
   }
 
   private addField(field: FormlyFieldConfig): void {
+    console.log(field);
     this.fields = [field, ...this.fields];
     // const key: any = field.key;
     // this.model[key] = field?.defaultValue;

@@ -1,8 +1,9 @@
-import { Component, ChangeDetectionStrategy, ViewEncapsulation } from '@angular/core';
+import { Component, ChangeDetectionStrategy, ViewEncapsulation, Inject, AfterViewInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { Subscription } from 'rxjs';
+import { EMPTY, Subscription } from 'rxjs';
+import { filter, switchMap, tap } from 'rxjs/operators';
 import { FIELD_TYPES } from '../enum/field-types.enum';
 import { fcFields } from './fc-fields';
 
@@ -15,15 +16,22 @@ export interface IFormlySelectOptions { name: string; value: string | number; }
   styleUrls: ['./fc-field-add-dialog.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FcFieldAddDialogComponent {
+export class FcFieldAddDialogComponent implements AfterViewInit {
   form = new FormGroup({});
   model = {};
   fields: FormlyFieldConfig[] = fcFields;
   subscription = new Subscription();
 
   constructor(
-    private dialogRef: MatDialogRef<FcFieldAddDialogComponent>
+    private dialogRef: MatDialogRef<FcFieldAddDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public addedFields: FormlyFieldConfig[]
   ) { }
+
+  ngAfterViewInit(): void {
+    if (this.addedFields) {
+      this.handleParentOptions();
+    }
+  }
 
 
   onSubmit(): void {
@@ -38,7 +46,10 @@ export class FcFieldAddDialogComponent {
       placeholder,
       options,
       required,
-      defaultValue
+      defaultValue,
+      hasParentField,
+      parentField,
+      parentFieldOption
     } = this.form.value;
 
     let fieldType; // input, select, radio, file, checkbox
@@ -66,9 +77,16 @@ export class FcFieldAddDialogComponent {
         options,
         required,
         type: inputType,
-        defaultValue
-      }
+      },
+      defaultValue
     };
+
+    if (hasParentField && fieldConfig.templateOptions) {
+      fieldConfig.templateOptions.attributes = {
+        parentField,
+        parentFieldOption
+      };
+    }
 
     this.onClose(fieldConfig);
   }
@@ -77,6 +95,20 @@ export class FcFieldAddDialogComponent {
   onClose(res: boolean | FormlyFieldConfig = false): void {
     this.dialogRef.close(res);
   }
+
+  private handleParentOptions(): void {
+    const options = this.addedFields.map(addField => ({
+      value: addField.key,
+      label: addField.templateOptions?.label
+    }));
+    this.fields = this.fields.map(field => {
+      if (field.key === 'parentField' && field.templateOptions) {
+        field.templateOptions.options = options;
+      }
+      return field;
+    });
+  }
+
 
 
 }

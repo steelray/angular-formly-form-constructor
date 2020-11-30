@@ -130,4 +130,30 @@ export const fcFields: FormlyFieldConfig[] = [
     },
     hideExpression: '!model.type'
   },
+  {
+    type: FIELD_TYPES.CHECKBOX,
+    key: 'hasParentField',
+    templateOptions: {
+      required: false,
+      label: 'Has parent field/dependency',
+    }
+  },
+  {
+    type: FIELD_TYPES.SELECT,
+    key: 'parentField',
+    templateOptions: {
+      required: false,
+      label: 'Select parent field/dependency',
+    },
+    hideExpression: '!model.hasParentField'
+  },
+  {
+    type: FIELD_TYPES.SELECT,
+    key: 'parentFieldOption',
+    templateOptions: {
+      required: false,
+      label: 'Select parent field option if depends on',
+    },
+    hideExpression: '!model.parentField'
+  }
 ];
